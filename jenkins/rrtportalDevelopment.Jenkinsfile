@@ -12,8 +12,9 @@ pipeline {
                     sh """
                     curl -o node.tar.xz ${nodeDownloadUrl}
                     tar -xvf node.tar.xz
-                    sudo mv node-v${nodeVersion}-linux-x64 /opt/node
-                    export PATH=/opt/node/bin:$PATH
+
+                    mv node-v${nodeVersion}-linux-x64 $PWD/node
+                    export PATH=$PWD/node/bin:$PATH
                     """
                 }
             }
