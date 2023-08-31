@@ -1,13 +1,10 @@
 pipeline {
     agent any
+
     stages {
-        stage('Checkout') {
-            steps {
-                // Checkout your source code from version control
-            }
-        }
         stage('Build') {
             steps {
+                echo 'Building..'
                 // Install Angular CLI globally
                 sh 'npm install -g @angular/cli@12.2.14'
                 
@@ -20,14 +17,13 @@ pipeline {
         }
         stage('Test') {
             steps {
-                // Run your tests
-                sh 'ng test'
+                echo 'Testing..'
+                 sh 'ng test'
             }
         }
         stage('Deploy') {
             steps {
-                // Deploy your Angular project
-                // Add your deployment steps here
+                echo 'Deploying....'
             }
         }
     }
