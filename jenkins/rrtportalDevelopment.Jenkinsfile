@@ -15,6 +15,8 @@ pipeline {
 
                     mv node-v${nodeVersion}-linux-x64 $PWD/node
                     export PATH=$PWD/node/bin:$PATH
+
+                    ls /var/lib/jenkins/node/bin
                     """
                 }
             }
@@ -23,7 +25,7 @@ pipeline {
             steps {
                 echo 'Building..'
                 // Install Angular CLI globally
-                sh 'npm install -g @angular/cli@12.2.14'
+                sh '/var/lib/jenkins/node/bin/npm install -g @angular/cli@12.2.14'
                 
                 // Install project dependencies
                 sh 'npm install'
