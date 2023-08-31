@@ -2,22 +2,19 @@ pipeline {
     agent any
 
     stages {
-        stage('Setup') {
-            steps {
-                script {
-                    // Instala nvm
-                    sh 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash'
 
-                    // Fuente de nvm para que esté disponible en este shell
-                    sh 'source ~/.nvm/nvm.sh'
-                }
-            }
-        }
         stage('Install Node.js') {
             steps {
                 script {
-                    sh 'nvm install 16.20.1'
-                    sh 'nvm use 16.20.1'
+                    def nodeVersion = '16.20.1'
+                    def nodeDownloadUrl = "https://nodejs.org/dist/v${nodeVersion}/node-v${nodeVersion}-linux-x64.tar.xz"
+                    
+                    sh """
+                    curl -o node.tar.xz ${nodeDownloadUrl}
+                    tar -xvf node.tar.xz
+                    mv node-v${nodeVersion}-linux-x64 /opt/node
+                    export PATH=/opt/node/bin:$PATH
+                    """
                 }
             }
         }
