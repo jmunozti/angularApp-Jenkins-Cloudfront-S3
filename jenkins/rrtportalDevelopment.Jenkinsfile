@@ -2,7 +2,13 @@ pipeline {
     agent any
 
     stages {
-
+        stage('Setup') {
+            steps {
+                // Descargar and configurar n
+                sh 'npm install -g n'
+                sh 'export PATH=$PATH:/var/jenkins_home/tools/lib/node'
+            }
+        }
         stage('Install Node.js') {
             steps {
                 script {
