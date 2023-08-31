@@ -2,6 +2,25 @@ pipeline {
     agent any
 
     stages {
+        stage('Setup') {
+            steps {
+                script {
+                    // Instala nvm
+                    sh 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash'
+
+                    // Fuente de nvm para que esté disponible en este shell
+                    sh 'source ~/.nvm/nvm.sh'
+                }
+            }
+        }
+        stage('Install Node.js') {
+            steps {
+                script {
+                    sh 'nvm install 16.20.1'
+                    sh 'nvm use 16.20.1'
+                }
+            }
+        }
         stage('Build') {
             steps {
                 echo 'Building..'
