@@ -6,18 +6,21 @@ pipeline {
         stage('Install Node.js') {
             steps {
                 script {
+                    // Define las versiones que deseas instalar
                     def nodeVersion = '16.20.1'
-                    def nodeDownloadUrl = "https://nodejs.org/dist/v${nodeVersion}/node-v${nodeVersion}-linux-x64.tar.xz"
-                    
-                    sh """
-                    curl -o node.tar.xz ${nodeDownloadUrl}
-                    tar -xvf node.tar.xz
+                    def npmVersion = '8.0.0'  // npm v7+ viene incluido con Node.js a partir de v16
 
-                    mv node-v${nodeVersion}-linux-x64 $PWD/node
-                    export PATH=$PWD/node/bin:$PATH
+                    // Descarga e instala Node.js
+                    sh "curl -LO https://nodejs.org/dist/v${nodeVersion}/node-v${nodeVersion}-linux-x64.tar.xz"
+                    sh "tar -xJf node-v${nodeVersion}-linux-x64.tar.xz"
+                    sh "sudo cp -r node-v${nodeVersion}-linux-x64/* /usr/local/"
 
-                    ls /var/lib/jenkins/node/bin
-                    """
+                    // Instala una versión específica de npm (opcional)
+                    sh "sudo npm install -g npm@${npmVersion}"
+
+                    // Limpia los archivos descargados
+                    sh "rm -rf node-v${nodeVersion}-linux-x64*"
+                    sh "ls && pwd"
                 }
             }
         }
@@ -28,7 +31,7 @@ pipeline {
                 sh '/var/lib/jenkins/node/bin/npm install -g @angular/cli@12.2.14'
                 
                 // Install project dependencies
-                sh 'npm install'
+                sh '    npm install'
                 
                 // Build your Angular project
                 sh 'ng build'
